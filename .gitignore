@@ -1,0 +1,13 @@
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.csv
+public/endireh_minificado.json
+src/data/endireh_minificado.json
