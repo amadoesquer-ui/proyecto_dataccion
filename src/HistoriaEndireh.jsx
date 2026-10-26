@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import datosJSON from './data/endireh_minificado.json';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, Plus, Minus } from 'lucide-react';
@@ -318,6 +318,7 @@ function calcPrevIngreso(db, colIng, colPer, violId) {
 // ═══════════════════════════════════════════════════════════════════════════════
 export default function HistoriaEndireh() {
   const [pasoActual, setPasoActual] = useState(1);
+  const contenidoRef = useRef(null);
   const [estadoSel, setEstadoSel] = useState(1);
   const [edadUsuario, setEdadUsuario] = useState('');
   const [datosBase, setDatosBase] = useState(null);
@@ -477,9 +478,10 @@ export default function HistoriaEndireh() {
         </div>
 
         {/* CONTENT — AnimatePresence keyed ONLY on pasoActual */}
-        <div style={{ flex: 1, overflowY: 'auto', paddingTop: 76, paddingBottom: 80 }} className="hide-scrollbar">
+        <div ref={contenidoRef} style={{ flex: 1, overflowY: 'auto', paddingTop: 76, paddingBottom: 80 }} className="hide-scrollbar">
           <div style={{ maxWidth: 480, margin: '0 auto', padding: '24px 24px 0' }}>
-            <AnimatePresence mode="wait">
+            {/* Al cambiar de tarjeta, la nueva entra desde arriba */}
+            <AnimatePresence mode="wait" onExitComplete={() => { window.scrollTo(0, 0); if (contenidoRef.current) contenidoRef.current.scrollTop = 0; }}>
               <motion.div key={pasoActual} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
 
                 {/* ═══ PASO 1 — Intro ═══ */}
